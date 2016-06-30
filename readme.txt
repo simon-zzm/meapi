@@ -38,6 +38,12 @@ mysqlToJson.py       mysql数据库选出的数据转json
 requirements.txt     使用第三方库名版本记录
 example.py           例子文件 
 
+更问题：
+非业务部分代码全部写在这三个文件里me.py，modules.py，
+mysqlToJson.py，主要更此三个文件即可。未来可能增加一个
+升级文件，方便升级操作。
+
+
 基础功能说明:
 登陆格式
 http://x.x.x.x:xxx/v1/login?user=simonzhang&passwd=1
