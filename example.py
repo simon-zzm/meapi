@@ -25,5 +25,13 @@ class exampleHandler(tornado.web.RequestHandler):
         # json名字部分的字段名。
         import mysqlToJson
         getJson =  mysqlToJson.dataToJson(data, "username")
+        # 获取用户信息数据
+        userInfoData = sqlcomm('select userId, age, class from userInfo')
+        # 组合json
+        # json五个参数，第一个为原始json，第二个为原始json里要链接字段
+        # 第三个为要插入的数据，第四个为插入数据要链接的字段
+        # 第五个为插入数据在新json里的名字
+        getJson = mysqlToJson.connDataToJson(getJson, 'id', \
+                                             userInfoData, 'userId', 'info')
         # 转换完成返回
         self.write(getJson)

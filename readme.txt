@@ -22,6 +22,7 @@ python me.py ttt
 3)redis认证存储session
 4)账户密码加盐存在mysql中,加密加盐
 5)mysql中查出的二维表转json
+6)支持将多次查询（select）数据组成一个json
 
 涉及到的技术和第三方库、软件
 tornado
@@ -37,12 +38,6 @@ modules.py           全局使用模块
 mysqlToJson.py       mysql数据库选出的数据转json
 requirements.txt     使用第三方库名版本记录
 example.py           例子文件 
-
-更问题：
-非业务部分代码全部写在这三个文件里me.py，modules.py，
-mysqlToJson.py，主要更此三个文件即可。未来可能增加一个
-升级文件，方便升级操作。
-
 
 基础功能说明:
 登陆格式
@@ -61,7 +56,6 @@ http://x.x.x.x:xxx/v1/logout
 999    登陆成功
 
 数据库中的测试数据(密码部分做了修改，可以使用createPass.py生成)
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(30) DEFAULT NULL,
@@ -73,3 +67,19 @@ INSERT INTO `user` VALUES ('1', 'simonzhang', 'pbkdf2:sha1:1000$X.............')
 INSERT INTO `user` VALUES ('2', 'tom', 'pbkdf2:sha1:1000$ZTwYUsHN$38...............');
 INSERT INTO `user` VALUES ('3', 'Dave', 'pbkdf2:sha1:1000$dLoolU5Z$7.................');
 
+CREATE TABLE `userInfo` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userId` int(10) NOT NULL,
+  `age` int(2) NOT NULL,
+  `class` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of userInfo
+-- ----------------------------
+INSERT INTO `userInfo` VALUES ('1', '1', '23', '3');
+INSERT INTO `userInfo` VALUES ('2', '3', '16', '2');
+
+个人博客 www.simonzhang.net
+邮箱 simon-zzm@163.com

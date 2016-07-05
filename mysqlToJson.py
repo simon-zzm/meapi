@@ -5,7 +5,7 @@
 # web:         www.simonzhang.net
 # Email:       simon-zzm@163.com
 ### END INIT INFO
-from json import dumps
+from json import dumps, loads
 
 # Mysql select the data transfer json
 # 
@@ -24,4 +24,23 @@ def dataToJson(sqlData, dataName):
         for lo2 in dataNameList:
             tmp[lo2] = sqlData[lo1][lo2]
         toJson[sqlData[lo1][dataName]] = tmp
-    return dumps(toJson, ensure_ascii=False)
+    return dumps(toJson, ensure_ascii = False)
+
+# 
+def connDataToJson(initData, connField1, 
+                   insertData, connField2, dataName='default'):
+    '''
+    
+    '''
+    tmpInitData = loads(initData)
+    tmpInsertData = loads(dataToJson(insertData, connField2))
+    tmpInsertDataKeys = tmpInsertData.keys()
+    for lineData in tmpInitData:
+        tmpConnField =  tmpInitData[lineData][connField1]
+        if "%s" % tmpConnField in tmpInsertDataKeys:
+            tmpInitData[lineData][dataName] = tmpInsertData["%s" % tmpConnField]
+        else:
+            tmpInitData[lineData][dataName] = {}
+    return dumps(tmpInitData, ensure_ascii = False)
+    
+    
