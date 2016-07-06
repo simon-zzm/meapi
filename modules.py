@@ -78,6 +78,32 @@ def auth(method):
             self.redirect("/")
     return checkUser
 
+#### 防sql注入
+def sqlInj(method):
+    def checkSql(self, *args, **kwargs):
+        checkNum = 0
+        sqlInjData = "'|and|or|exec|insert|select|delete|update|count|chr|mid|master|truncate|char|declare|=|{|}|[|]|\|:|;|<|>|?|,|.|`|~|!|@|$|*|%|^|(|)|script"
+        try:
+            allArgs = self.request.arguments
+            for one in allArgs:
+                # 获取参数转小写
+                tmpArg = self.get_argument(one).lower()
+                # 去空格
+                tmpArg = tmpArg.replace(' ', '')
+                # 检查是否有注入字符串
+                for singleInj in sqlInjData.split('|'):
+                    if tmpArg.find(singleInj) > -1:
+                        checkNum += 1
+            # 处理结果
+            if checkNum > 0:
+                response = '{"code":"921"}'
+                self.write(response)
+            else:
+                return method(self, *args, **kwargs)
+        except:
+            response = '{"code":"920"}'
+            self.write(response)
+    return checkSql
 
 # 将MySQL的数据转为json
 def mysqltojson(getList):

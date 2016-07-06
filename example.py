@@ -11,13 +11,15 @@ from modules import *
 class exampleHandler(tornado.web.RequestHandler):
     # 认证部分。如果不需要认证，则注释掉下面一行
     #@auth
+    # 检查输入参数，防止sql注入。推荐开通
+    @sqlInj
     def get(self):
         # 获取传入参数。一定要用try包一起来。
         # 避免参数漏传或传错引起系统报错。
         # 测试部分，没有参数就返回所有数据
         try:
             id = self.get_argument("id")
-            data = sqlcomm("select username,id from user where id =%s" % id)
+            data = sqlcomm("select username,id from user where id =%s" % (id))
         except:
             data = sqlcomm("select username,id from user")
         # 导入查出的数据转json

@@ -2,7 +2,7 @@
     学习http api开发知识。简化api开发流程。
 
 接口开发步骤(修改好配置文件): 
-1)example.py为例子文件。拼接一个sql取出值，并整理成json返回。
+1)example.py为例子文件。拼接一个sql取出值，调用函数将数据整理成json。
 2)在route.py文件中导入例子from example import *。
 3)在route.py文件中写好路由(r"/test", exampleHandler)。
 开发完成。启动服务,推荐命令如下。
@@ -23,6 +23,7 @@ python me.py ttt
 4)账户密码加盐存在mysql中,加密加盐
 5)mysql中查出的二维表转json
 6)支持将多次查询（select）数据组成一个json
+7)增加对参数非法字符过滤，防止sql注入
 
 涉及到的技术和第三方库、软件
 tornado
@@ -48,7 +49,13 @@ http://x.x.x.x:xxx/v1/logout
 返回错误部分说明：
 服务端错误为1xx到5xx 详见：http://www.simonzhang.net/?p=2972
 所以本系统错误返回错误用9xx
-950    转换json失败
+输入类错误920开始
+920    请求参数出错
+921    请求参数出现非法字符，可能是sql注入
+内部错误950开始
+940    转换json失败
+941    转换中传入的数据错误，数据为空
+返回错误960开始
 960    认证失败或接口错误
 995    用户名或密码出现错误
 997    服务端错误（写入redis错误）
