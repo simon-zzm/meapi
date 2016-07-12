@@ -48,11 +48,13 @@ if __name__ == "__main__":
     # 安全https部分
     if len(crtFile) != 0 or len(keyFile) != 0:
         try:
-            application = HTTPServer(application,ssl_options={
-                "certfile": "%s" % crtFile,
-                "keyfile": "%s" % keyFile
-                })
+            application = tornado.httpserver.HTTPServer(
+                              application,ssl_options={
+                                  "certfile": "%s" % crtFile, 
+                                  "keyfile": "%s" % keyFile}
+                          )
         except:
             print "https 配置文件部分错误"
+            exit()
     application.listen(listenPort, "%s" % listenIp)
     tornado.ioloop.IOLoop.instance().start()
