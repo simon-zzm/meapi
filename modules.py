@@ -78,32 +78,44 @@ def auth(method):
             self.redirect("/")
     return checkUser
 
+#### 检查请求url
+def checkUrl(method):
+    '''
+    当前包含检查有
+    sql注入
+    黑白名单
+    '''
+    def toCheck(self, *args, **kwargs):
+        tmpRes = sqlInj(self)
+        if len(tmpRes) > 0:
+            self.write(tmpRes)
+        else:
+            return method(self, *args, **kwargs)
+    return toCheck
+
+
 #### 防sql注入
-def sqlInj(method):
-    def checkSql(self, *args, **kwargs):
-        checkNum = 0
-        sqlInjData = "'|and|or|exec|insert|select|delete|update|count|chr|mid|master|truncate|char|declare|=|{|}|[|]|\|:|;|<|>|?|,|.|`|~|!|@|$|*|%|^|(|)|script"
-        try:
-            allArgs = self.request.arguments
-            for one in allArgs:
-                # 获取参数转小写
-                tmpArg = self.get_argument(one).lower()
-                # 去空格
-                tmpArg = tmpArg.replace(' ', '')
-                # 检查是否有注入字符串
-                for singleInj in sqlInjData.split('|'):
-                    if tmpArg.find(singleInj) > -1:
-                        checkNum += 1
-            # 处理结果
-            if checkNum > 0:
-                response = '{"code":"921"}'
-                self.write(response)
-            else:
-                return method(self, *args, **kwargs)
-        except:
-            response = '{"code":"920"}'
-            self.write(response)
-    return checkSql
+def sqlInj(self):
+    response = ''
+    checkNum = 0
+    sqlInjData = "'|and|or|exec|insert|select|delete|update|count|chr|mid|master|truncate|char|declare|=|{|}|[|]|\|:|;|<|>|?|,|.|`|~|!|@|$|*|%|^|(|)|script"
+    try:
+        allArgs = self.request.arguments
+        for one in allArgs:
+            # 获取参数转小写
+            tmpArg = self.get_argument(one).lower()
+            # 去空格
+            tmpArg = tmpArg.replace(' ', '')
+            # 检查是否有注入字符串
+            for singleInj in sqlInjData.split('|'):
+                if tmpArg.find(singleInj) > -1:
+                    checkNum += 1
+        # 处理结果
+        if checkNum > 0:
+            response = '{"code":"921"}'
+    except:
+        response = '{"code":"920"}'
+    return response
 
 # 将MySQL的数据转为json
 def mysqltojson(getList):
@@ -130,19 +142,20 @@ def checkPasswd(passwd, passstr):
 
 # 获取当时间
 # 格式化为 年月日 小时分秒
-def get_now_time():
+def getNowTime():
     import time
     return time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
 
 
-# 记录接口速度
-def intface_user_time(self):
+# 处理返回数据
+def toWrite(self, context):
     #只判断单位为秒
-    use_time = int(self.request.request_time())
-    if slow_timeout < use_time:
-        slow_log = open("%sslow.log" % log_path, "ab")
-        slow_log.write("%s %s %s\n" % (get_now_time(), use_time, self.request.uri))
-        slow_log.close()
+    useTime = int(self.request.request_time())
+    if slowTimeout < useTime:
+        slowLog = open("%sslow.log" % logPath, "ab")
+        slowLog.write("%s %s %s\n" % (getNowTime(), useTime, self.request.uri))
+        slowLog.close()
+    self.write(context)
 
 
 #### 数据库部分

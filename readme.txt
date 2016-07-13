@@ -25,6 +25,7 @@ python me.py ttt
 6)支持将多次查询（select）数据组成一个json
 7)增加对参数非法字符过滤，防止sql注入
 8)修改配置中秘钥文件，直接使用https。(https推荐使用nginx做跳转)
+9)记录api的慢日志，返回超出阈值则记录
 
 涉及到的技术和第三方库、软件
 tornado

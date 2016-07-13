@@ -11,8 +11,8 @@ from modules import *
 class exampleHandler(tornado.web.RequestHandler):
     # 认证部分。如果不需要认证，则注释掉下面一行
     #@auth
-    # 检查输入参数，防止sql注入。推荐开通
-    @sqlInj
+    # 检查输入参数，防止sql注入,黑白名单等
+    @checkUrl
     def get(self):
         # 获取传入参数。一定要用try包一起来。
         # 避免参数漏传或传错引起系统报错。
@@ -35,5 +35,6 @@ class exampleHandler(tornado.web.RequestHandler):
         # 第五个为插入数据在新json里的名字
         getJson = mysqlToJson.connDataToJson(getJson, 'id', \
                                              userInfoData, 'userId', 'info')
-        # 转换完成返回
-        self.write(getJson)
+        # 返回值.用于判断处理时间，记录处理慢的api等。
+        # 用self.write则不能判断
+        toWrite(self, getJson)

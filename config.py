@@ -8,7 +8,7 @@
 ### END INIT INFO
 
 # 监听部分
-listenIp = 'x.x.x.x'
+listenIp = '182.92.186.219'
 listenPort = 55000
 
 # SSL部分，实现https
@@ -17,15 +17,15 @@ listenPort = 55000
 crtFile = '' 
 keyFile = ''
 
-# cookie 安全 key。随便写
-cookieKey = 'dfK8Wv6fgDew+6UGm#Bhc$dekWBQc80FKsTF$CsOCi3tG'
+# cookie 安全 key
+cookieKey = 'dfK8Wv6fgDew+6UGVRBhcbVekWBQc80FKsTF$CsYCiitG'
 sessionTimeout = 60*60*24*7
 
 # mysql
 # 单个数据库信息格式为：IP 端口 账号 密码 库名
 # 多个库以列表形势配置
-MySqlWriteInfo = [['x.x.x.x', 3306, 'meapi', 'xxxxxx', 'meapi'],]
-MySqlReadInfo = [['x.x.x.x', 3306, 'meapi', 'xxxxxx', 'meapi'],]
+MySqlWriteInfo = [['10.171.53.171', 3306, 'caidanium', '4f8f$e8f', 'caidaniu'],]
+MySqlReadInfo = [['10.171.53.171', 3306, 'caidanium', '4f8f$e8f', 'caidaniu'],]
 
 # redis 数据超时时间为7天
 redisIp = "10.171.53.171"
@@ -39,3 +39,10 @@ slowTimeout = 2
 
 # 日志路径
 logPath = './logs/'
+
+# 黑白名单那设置
+blackList = []
+whiteList = []
+
+# 美秒中可以访问的次数
+secondRate = 0

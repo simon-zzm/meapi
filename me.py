@@ -52,7 +52,7 @@ if __name__ == "__main__":
                               application,ssl_options={
                                   "certfile": "%s" % crtFile, 
                                   "keyfile": "%s" % keyFile}
-                          )
+                              )
         except:
             print "https 配置文件部分错误"
             exit()
