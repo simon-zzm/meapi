@@ -86,13 +86,28 @@ def checkUrl(method):
     黑白名单
     '''
     def toCheck(self, *args, **kwargs):
+        tmpRes = checkIP(self)
+        if len(tmpRes) > 0:
+            self.write(tmpRes)
+            return 
         tmpRes = sqlInj(self)
         if len(tmpRes) > 0:
             self.write(tmpRes)
+            return 
         else:
             return method(self, *args, **kwargs)
     return toCheck
 
+#### 检查IP
+def checkIP(self):
+    response = ''
+    getIP = self.request.remote_ip
+    if getIP in whiteList:
+        return response
+    elif getIP in blackList or '0.0.0.0' in blackList:
+        return '{"code":"922""}'
+    else:
+        return response
 
 #### 防sql注入
 def sqlInj(self):

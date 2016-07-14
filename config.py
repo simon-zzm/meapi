@@ -11,6 +11,9 @@
 listenIp = '182.92.186.219'
 listenPort = 55000
 
+# 运行模式True/False
+debugMode = True
+
 # SSL部分，实现https
 # 将私钥和签名文件放到项目跟目录下即可
 # 如果不需要此项为空
@@ -41,6 +44,8 @@ slowTimeout = 2
 logPath = './logs/'
 
 # 黑白名单那设置
+# 格式为['192.168.1.1', '192.168.1.2']
+# 如果为'0.0.0.0'为所有
 blackList = []
 whiteList = []
 

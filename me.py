@@ -41,7 +41,7 @@ settings = {
     "xsrf_cookies":True,
     "login_url": "/",
     "static_path":"static",
-    "debug":True,
+    "debug":debugMode,
 }
 
 if __name__ == "__main__":
@@ -51,10 +51,10 @@ if __name__ == "__main__":
             application = tornado.httpserver.HTTPServer(
                               application,ssl_options={
                                   "certfile": "%s" % crtFile, 
-                                  "keyfile": "%s" % keyFile}
-                              )
+                                  "keyfile": "%s" % keyFile},
+                             )
         except:
             print "https 配置文件部分错误"
             exit()
-    application.listen(listenPort, "%s" % listenIp)
+    application.listen(listenPort, "%s" % listenIp, xheaders=True)
     tornado.ioloop.IOLoop.instance().start()
