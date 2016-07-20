@@ -11,8 +11,9 @@
 listenIp = '182.92.186.219'
 listenPort = 55000
 
-# 运行模式True/False
-debugMode = True
+# 调试模式为True。代码错误会打印到浏览器上，代码修改后立即生效
+# 运行模式为False。执行速度快，但是代码修改后需要重启服务。
+debugMode = False
 
 # SSL部分，实现https
 # 将私钥和签名文件放到项目跟目录下即可
@@ -35,10 +36,16 @@ redisIp = "10.171.53.171"
 redisPort = "6379"
 reidsTimeout = 60*60*24*7
 
+# 如果要记录日志，需要使用toWrite返回数据
 # 慢日志
 # 当前接口超时n秒后记录慢日志
 # 慢日志默认位置在logs目录下，文件名为slow.log(未测试)
 slowTimeout = 2
+
+# 记录详细日志(默认关闭)
+# true为开启，False为关闭
+# 日志格式:请求时间 远程ip 返回耗时 请求地址 请求协议 请求模式 请求路径 浏览器信息
+logStatus = False
 
 # 日志路径
 logPath = './logs/'
@@ -49,5 +56,7 @@ logPath = './logs/'
 blackList = []
 whiteList = []
 
-# 美秒中可以访问的次数
+# 每秒中可以访问的次数（未实现）
 secondRate = 0
+
+

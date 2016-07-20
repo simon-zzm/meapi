@@ -9,6 +9,7 @@ import tornado.ioloop
 import tornado.web
 
 import sys
+import time
 import uuid
 from config import *
 
@@ -158,8 +159,7 @@ def checkPasswd(passwd, passstr):
 # 获取当时间
 # 格式化为 年月日 小时分秒
 def getNowTime():
-    import time
-    return time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+    return time.strftime('%Y-%m-%d %T',time.localtime(time.time()))
 
 
 # 处理返回数据
@@ -170,6 +170,19 @@ def toWrite(self, context):
         slowLog = open("%sslow.log" % logPath, "ab")
         slowLog.write("%s %s %s\n" % (getNowTime(), useTime, self.request.uri))
         slowLog.close()
+    if logStatus :
+        nowTime = getNowTime()
+        getIP = self.request.remote_ip
+        getUri = self.request.uri
+        getAgent = self.request.headers['User-Agent']
+        getHost = self.request.host
+        getProtocol =self.request.protocol
+        getMethod = self.request.method
+        log = open('%slog%s.log' % (logPath, nowTime.split()[0]), "ab")
+        log.write('%s %s %s %s %s %s %s "%s"\n' % (nowTime, getIP, useTime,
+                                                   getHost, getProtocol, 
+                                                   getMethod, getUri, getAgent))
+        log.close()
     self.write(context)
 
 

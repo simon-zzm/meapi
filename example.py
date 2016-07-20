@@ -35,6 +35,6 @@ class exampleHandler(tornado.web.RequestHandler):
         # 第五个为插入数据在新json里的名字
         getJson = mysqlToJson.connDataToJson(getJson, 'id', \
                                              userInfoData, 'userId', 'info')
-        # 返回值.用于判断处理时间，记录处理慢的api等。
+        # 返回值.用于判断处理时间,记录处理慢的api,详细日志等等。
         # 用self.write则不能判断
         toWrite(self, getJson)
