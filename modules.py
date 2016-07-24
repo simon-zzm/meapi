@@ -113,8 +113,6 @@ def checkIP(self):
 #### 防sql注入
 def sqlInj(self):
     response = ''
-    checkNum = 0
-    sqlInjData = "'|and|or|exec|insert|select|delete|update|count|chr|mid|master|truncate|char|declare|=|{|}|[|]|\|:|;|<|>|?|,|.|`|~|!|@|$|*|%|^|(|)|script"
     try:
         allArgs = self.request.arguments
         for one in allArgs:
@@ -123,12 +121,11 @@ def sqlInj(self):
             # 去空格
             tmpArg = tmpArg.replace(' ', '')
             # 检查是否有注入字符串
-            for singleInj in sqlInjData.split('|'):
+            for singleInj in sqlInjData:
                 if tmpArg.find(singleInj) > -1:
-                    checkNum += 1
-        # 处理结果
-        if checkNum > 0:
-            response = '{"code":"921"}'
+                    # 处理结果
+                    response = '{"code":"921"}'
+                    return response
     except:
         response = '{"code":"920"}'
     return response

@@ -13,9 +13,7 @@ def checkData(data, dataName):
     if len(data) <= 0:
         toJson = {"code":"941"}
     else:
-        dataNameList = data[0].keys()
-        # 
-        if dataName not in dataNameList:
+        if dataName not in data[0].keys():
             toJson = {"code":"940"}
     return toJson
 

@@ -45,7 +45,7 @@ slowTimeout = 2
 # 记录详细日志(默认关闭)
 # true为开启，False为关闭
 # 日志格式:请求时间 远程ip 返回耗时 请求地址 请求协议 请求模式 请求路径 浏览器信息
-logStatus = False
+logStatus = True
 
 # 日志路径
 logPath = './logs/'
@@ -59,4 +59,11 @@ whiteList = []
 # 每秒中可以访问的次数（未实现）
 secondRate = 0
 
-
+# 防SQL注入关键字。只在modules.py中使用。
+sqlInjData = ["'", 'and', 'or', 'exec', 'insert', 
+              'select', 'delete', 'update', 'count', 
+              'chr', 'mid', 'master', 'truncate', 'char', 
+              'declare', '=', '{', '}', '[', ']', '\\', 
+              ':', ';', '<', '>', '?', ',', '.', '`', '~', 
+              '!', '@', '$', '*', '%', '^', '(', ')', 
+              '|', 'script']
