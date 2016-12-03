@@ -8,7 +8,7 @@
 ### END INIT INFO
 
 # 监听部分
-listenIp = '182.92.186.219'
+listenIp = 'x.x.x.x'
 listenPort = 55000
 
 # 调试模式为True。代码错误会打印到浏览器上，代码修改后立即生效
@@ -28,11 +28,11 @@ sessionTimeout = 60*60*24*7
 # mysql
 # 单个数据库信息格式为：IP 端口 账号 密码 库名
 # 多个库以列表形势配置
-MySqlWriteInfo = [['10.171.53.171', 3306, 'caidanium', '4f8f$e8f', 'caidaniu'],]
-MySqlReadInfo = [['10.171.53.171', 3306, 'caidanium', '4f8f$e8f', 'caidaniu'],]
+MySqlWriteInfo = [['x.x.x.x', 3306, 'user', 'pass', 'database'],]
+MySqlReadInfo = [['x.x.x.x', 3306, 'user', 'pass', 'database'],]
 
 # redis 数据超时时间为7天
-redisIp = "10.171.53.171"
+redisIp = "x.x.x.x"
 redisPort = "6379"
 reidsTimeout = 60*60*24*7
 
