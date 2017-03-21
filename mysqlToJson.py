@@ -5,17 +5,17 @@
 # web:         www.simonzhang.net
 # Email:       simon-zzm@163.com
 ### END INIT INFO
-from json import dumps, loads
+from simplejson import dumps, loads
 
 # check error
 def checkData(data, dataName):
     toJson = {}
     if len(data) <= 0:
-        toJson = {"code":"941"}
+        toJson = {"code":941}
     else:
         if dataName not in data[0].keys():
-            toJson = {"code":"940"}
-    return toJson
+            toJson = {"code":940}
+    return dumps(toJson)
 
 # Mysql select the data transfer json
 # 
@@ -39,12 +39,12 @@ def dataToJson(sqlData, dataName):
 def connDataToJson(initData, connField1, 
                    insertData, connField2, dataName='default'):
     '''
-    
+
     '''
     #
     tmpInitData = loads(initData)
     if len(tmpInitData) == 1 and 'code' in tmpInitData.keys():
-        reJson = {"code":"940"}
+        reJson = {"code":940}
         return dumps(reJson, ensure_ascii = False)
     # 
     tmpInsertData = loads(dataToJson(insertData, connField2))

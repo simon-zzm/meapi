@@ -10,6 +10,7 @@ import tornado.web
 
 import sys
 import time
+import json
 import uuid
 from config import *
 
@@ -27,8 +28,8 @@ class LoginHandler(tornado.web.RequestHandler):
         try:
             passwd = sqlcomm("select passwd from user where username= '%s'" % userName)[0]['passwd']
         except:
-            response = '{"code":"995"}'
-            self.write(response)
+            res = {"code":995}
+            self.write(dictToJson(res))
             return
         # 验证账号密码
         if checkPasswd(passwd, passWord):
@@ -36,9 +37,9 @@ class LoginHandler(tornado.web.RequestHandler):
             self.set_secure_cookie("sessionid", sessionId, \
                                            path="/", expires_days = sessionTimeout)
             if redisDB.setex("%s" % sessionId,  reidsTimeout, "%s" % userName):
-                response = '{"code":"999"}'
+                res = {"code":999}
             else:
-                response = '{"code":"997"}'
+                res = {"code":997}
         else:
             try:
                 sessionId = self.get_secure_cookie("sessionid")
@@ -46,8 +47,8 @@ class LoginHandler(tornado.web.RequestHandler):
             except:
                 pass
             self.clear_all_cookies()
-            response = '{"code":"995"}'
-        self.write(response)
+            res = {"code":995}
+        self.write(dictToJson(res))
 
 # 注销部分
 class LogoutHandler(tornado.web.RequestHandler):
@@ -60,8 +61,8 @@ class LogoutHandler(tornado.web.RequestHandler):
             delRedisStatus = redisDB.delete("%s" % _sessionId)
         except:
             pass
-        response = '{"code":"998"}'
-        self.write(response)
+        response = {"code":998}
+        self.write(dictToJson(res))
 
 #### 全局模块部分
 # 基础认证
@@ -106,7 +107,7 @@ def checkIP(self):
     if getIP in whiteList:
         return response
     elif getIP in blackList or '0.0.0.0' in blackList:
-        return '{"code":"922""}'
+        return dictToJson({"code":922})
     else:
         return response
 
@@ -124,15 +125,15 @@ def sqlInj(self):
             for singleInj in sqlInjData:
                 if tmpArg.find(singleInj) > -1:
                     # 处理结果
-                    response = '{"code":"921"}'
-                    return response
+                    res = {"code":921}
+                    return dictToJson(res)
     except:
-        response = '{"code":"920"}'
-    return response
+        res = {"code":920}
+    return dictToJson(res)
 
 # 将MySQL的数据转为json
 def mysqltojson(getList):
-    import json
+    import simplejson
     _createStr = []
     # 循环所有数据字典
     for l in getList:
@@ -141,8 +142,11 @@ def mysqltojson(getList):
         for o in l.keys():
             _createTmpDict[o] = l[o]
         _createStr.append(_createTmpDict)
-    return json.dumps(_createStr, ensure_ascii=False)
+    return simplejson.dumps(_createStr, ensure_ascii=False)
 
+# 将字典转为json
+def dictToJson(tmpStr):
+    return json.dumps(tmpStr, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
 
 # 加密、解密
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -210,7 +214,7 @@ def sqlcomm(sql):
 
 #### redis
 import redis
-redisDB = redis.StrictRedis(host = redisIp, port = redisPort)
+redisDB = redis.StrictRedis(host = redisIp, port = redisPort, db=redisDB)
 #redis_db.setex("key", redis_timeout, "valuse")
 #redis_db.get("key")
 
@@ -221,6 +225,6 @@ class BaseErrorHandler(tornado.web.RequestHandler):
     
     def writeError(self, statusCode, **kwargs):
         if statusCode == 405:
-            self.write('{"code":"960"}')
+            self.write(dictToJson({"code":960}))
         else:
-            self.write('{"code":"'+str(statusCode)+'"}')
+            self.write(dictToJson({"code":statusCode}))

@@ -34,6 +34,7 @@ MySqlReadInfo = [['x.x.x.x', 3306, 'user', 'pass', 'database'],]
 # redis 数据超时时间为7天
 redisIp = "x.x.x.x"
 redisPort = "6379"
+redisDB = 1
 reidsTimeout = 60*60*24*7
 
 # 如果要记录日志，需要使用toWrite返回数据
@@ -64,6 +65,6 @@ sqlInjData = ["'", 'and', 'or', 'exec', 'insert',
               'select', 'delete', 'update', 'count', 
               'chr', 'mid', 'master', 'truncate', 'char', 
               'declare', '=', '{', '}', '[', ']', '\\', 
-              ':', ';', '<', '>', '?', ',', '.', '`', '~', 
-              '!', '@', '$', '*', '%', '^', '(', ')', 
+              ':', ';', '<', '>', '?', ',', '`', '~', 
+              '!', '$', '*', '%', '^', '(', ')', 
               '|', 'script']

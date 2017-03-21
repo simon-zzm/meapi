@@ -12,6 +12,9 @@ python me.py ttt
 
 其它部分的详细记录
 
+其它库建议pip安装
+simplejson
+
 开发规范：
     变量、函数、文件名等命名使用驼峰命名法。
     python开发遵循 PEP-8代码风格。
